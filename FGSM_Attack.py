@@ -195,8 +195,9 @@ def main():
     model.load_state_dict(torch.load('model-best.pth'))
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     feature_extractor = FeatureExtractor()
-    image = Image.open(requests.get('http://images.cocodataset.org/train2017/000000505539.jpg', stream=True).raw)
-    #image = Image.open("YOUR IMAGE") #load your image
+    print('Введите путь к интересующему Вас изображению')
+    image = Image.open(input()) #load your image
+    print('Введите корректную подпись к фото')
     caption = input().split(' ') #insert correct caption for your image
     current_img_list, labels, mask, im_scales = encode(image, caption, infos['opt'].vocab .items(), device)
     current_img_list.tensors.requires_grad = True
@@ -209,6 +210,7 @@ def main():
     model.zero_grad()
     feature_extractor.detection_model.zero_grad()
     loss.backward()
+    print('Введите параметр для FGSM атаки - Epsilon')
     epsilon = float(input()) # input epsilon > 0
     perturbed_image = fgsm_attack(current_img_list, epsilon, current_img_list.tensors.grad.data)
     output = feature_extractor.detection_model(current_img_list)
