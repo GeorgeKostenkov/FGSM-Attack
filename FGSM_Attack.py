@@ -42,9 +42,10 @@ infos = captioning.utils.misc.pickle_load(open('infos_trans12-best.pkl', 'rb'))
 infos['opt'].vocab = infos['vocab']
 
 model = captioning.models.setup(infos['opt'])
-model.to('cuda')
-model.load_state_dict(torch.load('model-best.pth'))
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
+model.to(device)
+model.load_state_dict(torch.load('model-best.pth'))
+model.eval()
 
 def encode(image, caption, vocab, device): #image in .jpg, caption - list of words (tokens)
     voc = {value : key for (key, value) in vocab}
@@ -187,13 +188,6 @@ def fgsm_attack(image, epsilon, data_grad): # perturbed_image = image + epsilon 
     return perturbed_image
     
 def main():
-    infos = captioning.utils.misc.pickle_load(open('infos_trans12-best.pkl', 'rb'))
-    infos['opt'].vocab = infos['vocab']
-
-    model = captioning.models.setup(infos['opt'])
-    model.to('cuda')
-    model.load_state_dict(torch.load('model-best.pth'))
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     feature_extractor = FeatureExtractor()
     print('Введите путь к интересующему Вас изображению')
     image = Image.open(input()) #load your image
@@ -204,7 +198,7 @@ def main():
     output = feature_extractor.detection_model(current_img_list)
     img_features = feature_extractor._process_feature_extraction(output, im_scales, 
                                                 'fc6', 0.2)[0]
-    model.eval()
+    print('Original image:', model.decode_sequence(model(img_features.mean(0)[None], img_features[None], mode='sample', opt={'beam_size':5, 'sample_method':'beam_search', 'sample_n':1})[0]))
     crit = LanguageModelCriterion()
     loss = crit(model(img_features.mean(0).reshape(1, -1), img_features.reshape(1, 100, 2048), labels[:, :, :-1]), labels[:, :, 1:], mask[:, :, 1:])
     model.zero_grad()
@@ -217,7 +211,7 @@ def main():
     img_features = feature_extractor._process_feature_extraction(output, im_scales, 
                                                 'fc6', 0.2)[0]
     perturbed_caption = model.decode_sequence(model(img_features.mean(0)[None], img_features[None], mode='sample', opt={'beam_size':5, 'sample_method':'beam_search', 'sample_n':1})[0])
-    print(perturbed_caption)
+    print('Perturbed image:', perturbed_caption)
     
 if __name__ == "__main__":
     main()
