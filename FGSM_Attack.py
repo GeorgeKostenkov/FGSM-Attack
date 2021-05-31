@@ -190,7 +190,7 @@ def fgsm_attack(image, epsilon, data_grad): # perturbed_image = image + epsilon 
 def main():
     feature_extractor = FeatureExtractor()
     print('Введите путь к интересующему Вас изображению')
-    image = Image.open(input()) #load your image
+    image = Image.open(input()) #path to your image
     print('Введите корректную подпись к фото')
     caption = input().split(' ') #insert correct caption for your image
     current_img_list, labels, mask, im_scales = encode(image, caption, infos['opt'].vocab .items(), device)
