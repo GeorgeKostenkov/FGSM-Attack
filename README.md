@@ -4,7 +4,7 @@
 При возникновении ошибок в работе кода обращаться в телеграм - @georgekostenkov .  
 -
 Для более удобного запуска, демонстрации и установки среды перейти по ссылке ниже в Google Colab Notebook:
-https://colab.research.google.com/drive/1H3PkN3vmUgC1S-xOBYEAava8HwgNq91j#scrollTo=wO1vl-Jb-1d_
+https://colab.research.google.com/drive/14_FBg4mIYGrXNpRBUvrE8C8mixUbTs1I?usp=sharing
 -
 # Возможные ошибки:  
 1. AttributeError: module 'torch._six' has no attribute 'PY3'  
