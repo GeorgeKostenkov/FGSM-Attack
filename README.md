@@ -3,8 +3,10 @@
 Запустить FGSM_Attack.py, чтобы получить описание сначала для оригинальной картинки, а затем для зашумленной (под действием атаки). (Для корректной настройки среды раскомментировать первые строчки)  
 При возникновении ошибок в работе кода обращаться в телеграм - @georgekostenkov .  
 -
+
+
 Для более удобного запуска, демонстрации и установки среды перейти по ссылке ниже в Google Colab Notebook:
-https://colab.research.google.com/drive/14_FBg4mIYGrXNpRBUvrE8C8mixUbTs1I?usp=sharing
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/14_FBg4mIYGrXNpRBUvrE8C8mixUbTs1I?usp=sharing)
 -
 # Возможные ошибки:  
 1. AttributeError: module 'torch._six' has no attribute 'PY3'  
